@@ -146,8 +146,8 @@ const GenerateContent = () => {
                                 </div>
                             </div>
                             <div className="bg-gray-50 px-8 py-4 border-t border-gray-100 text-sm text-gray-500 flex justify-between">
-                                <span>Level: {generatedContent.level}</span>
-                                <span>Type: {generatedContent.type}</span>
+                                <span>Level: {generatedContent.level || formData.level}</span>
+                                <span>Type: {generatedContent.type || formData.type}</span>
                             </div>
                         </div>
                     )}
