@@ -35,6 +35,25 @@ const UserSchema = new mongoose.Schema({
         enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Not Selected'],
         default: 'Not Selected'
     },
+    avatar: {
+        type: {
+            type: String,
+            enum: ['emoji', 'upload'],
+            default: 'emoji'
+        },
+        value: {
+            type: String,
+            default: '👤'
+        }
+    },
+    placementTestCompleted: {
+        type: Boolean,
+        default: false
+    },
+    placementTestScore: {
+        type: Number,
+        default: 0
+    },
     gamification: {
         points: { type: Number, default: 0 },
         streak: { type: Number, default: 0 },

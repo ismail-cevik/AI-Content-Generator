@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                             Authorization: `Bearer ${token}`
                         }
                     };
-                    const { data } = await axios.get('/api/auth/me', config);
+                    const { data } = await axios.get('http://localhost:5001/api/auth/me', config);
                     if (data.success) {
                         setUser(data.data);
                     } else {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('/api/auth/login', { email, password });
+            const { data } = await axios.post('http://localhost:5001/api/auth/login', { email, password });
             if (data.success) {
                 localStorage.setItem('token', data.token);
                 // The API returns the user object directly mixed with token? 
@@ -47,7 +47,8 @@ export const AuthProvider = ({ children }) => {
                     email: data.email,
                     role: data.role,
                     interests: data.interests,
-                    languageLevel: data.languageLevel
+                    languageLevel: data.languageLevel,
+                    placementTestCompleted: data.placementTestCompleted
                 });
                 return { success: true };
             }
@@ -61,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         try {
-            const { data } = await axios.post('/api/auth/register', { name, email, password });
+            const { data } = await axios.post('http://localhost:5001/api/auth/register', { name, email, password });
             if (data.success) {
                 localStorage.setItem('token', data.token);
                 setUser({
@@ -80,13 +81,32 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const refreshUser = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                };
+                const { data } = await axios.get('http://localhost:5001/api/auth/me', config);
+                if (data.success) {
+                    setUser(data.data);
+                }
+            } catch (error) {
+                console.error('Error refreshing user:', error);
+            }
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, register, logout, loading, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

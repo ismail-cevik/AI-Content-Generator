@@ -93,7 +93,8 @@ exports.updateDetails = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             interests: req.body.interests,
-            languageLevel: req.body.languageLevel
+            languageLevel: req.body.languageLevel,
+            avatar: req.body.avatar
         };
 
         const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
